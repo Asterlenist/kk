@@ -18,6 +18,16 @@ go build -o kk .
 
 Run `./kk` without arguments to print the command summary.
 
+## Install
+
+With Go and Git installed, run the installer as root:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/Asterlenist/kk/main/install.py | sudo python3
+```
+
+The installer builds `kk` and places it in `/usr/bin/`. Piping a downloaded script to `sudo python3` runs that script with administrative privileges; only use this command if you trust the source.
+
 ## Commands
 
 ```text
