@@ -20,34 +20,58 @@ Run `./kk` without arguments to print the command summary.
 
 ## Install
 
-With Go and Git installed, run the installer as root:
+With Go and Git installed, build the binary and install it manually:
+
+```sh
+sudo install -m 0755 kk /usr/local/bin/kk
+```
+
+Or use the project installer script:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/Asterlenist/kk/main/install.py | sudo python3
 ```
 
-The installer builds `kk` and places it in `/usr/bin/`. Piping a downloaded script to `sudo python3` runs that script with administrative privileges; only use this command if you trust the source.
+The installer builds `kk` and places it in `/usr/bin/` or `/usr/local/bin/` depending on the script implementation. Piping a downloaded script to `sudo python3` runs that script with administrative privileges; only use this command if you trust the source.
 
 ## Commands
 
 ```text
 kk system
 kk pkg-inst <package> [package...]
+kk pkg-upd
+kk pkg-upg
 kk pkg-rem <package> [package...]
 kk pkg-pur <package> [package...]
 kk flatpak-inst <app-id> [app-id...]
 kk service-add <service> [service...]
 kk service-rem <service> [service...]
+kk update
 ```
 
-- `system` prints the detected operating system, Linux distribution and available package manager.
-- `pkg-inst` installs one or more packages using the detected native package manager.
-- `pkg-rem` removes packages. `pkg-pur` also requests configuration and dependency cleanup where the package manager supports it.
+The application also accepts longer aliases:
+
+```text
+kk package-install <package> [package...]
+kk package-update
+kk package-upgrade
+kk package-remove <package> [package...]
+kk package-purge <package> [package...]
+kk flatpak-install <app-id> [app-id...]
+```
+
+- `system` prints the detected operating system, Linux distribution, and available package manager.
+- `pkg-inst`/`package-install` install one or more packages using the detected native package manager.
+- `pkg-upd`/`package-update` refresh the package index.
+- `pkg-upg`/`package-upgrade` upgrade installed packages. This is primarily supported for APT-based systems.
+- `pkg-rem`/`package-remove` remove packages.
+- `pkg-pur`/`package-purge` remove packages and clean configuration/dependencies where the package manager supports it.
 - `flatpak-inst` installs application IDs from the Flathub remote. Flatpak must already be installed and configured with Flathub.
 - `service-add` enables and starts systemd services immediately.
 - `service-rem` stops and disables systemd services. It does not delete unit files.
+- `update` pulls the latest project version and installs the updated binary to `/usr/local/bin/kk`.
 
-Package operations use the available APT or DNF/YUM executable. Administrative privileges may be required; `kk` does not invoke `sudo` or elevate privileges automatically. Review package names and system changes before running install, remove, or purge commands.
+Package operations use the available APT or DNF/YUM executable. Administrative privileges may be required; `kk` does not invoke `sudo` or elevate privileges automatically. Review package names and system changes before running install, remove, purge, or upgrade commands.
 
 ## Command history
 
