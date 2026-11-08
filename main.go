@@ -23,13 +23,22 @@ func run() int {
 
 	if len(os.Args) < 2 {
 		fmt.Print(`Usage: kk <command> [args]
-	    	kk pkg-inst <package> [package...] - installs packages using the native package manager
-	    	kk pkg-rem <package> [package...]  - removes packages
-	    	kk pkg-pur <package> [package...]  - purges packages and configuration where supported
-	    	kk flatpak-inst <app-id>            - installs an app from Flathub
-	    	kk service-add <service> [...]      - enables and starts systemd services
-	    	kk service-rem <service> [...]      - disables and stops systemd services
-    		kk system                    - displays the operating system and package manager
+			kk pkg-inst <package> [package...]        - installs packages using the native package manager
+			kk package-install <package> [package...] - installs packages using the native package manager
+			kk pkg-upd                                 - updates the package index using the native package manager
+			kk package-update                          - updates the package index using the native package manager
+			kk pkg-upg                                 - upgrades the installed packages using the native package manager
+			kk package-upgrade                         - upgrades the installed packages using the native package manager
+			kk pkg-rem <package> [package...]          - removes packages
+			kk package-remove <package> [package...]  - removes packages
+			kk pkg-pur <package> [package...]          - purges packages and configuration where supported
+			kk package-purge <package> [package...]    - purges packages and configuration where supported
+			kk flatpak-inst <app-id> [app-id...]        - installs apps from Flathub
+			kk flatpak-install <app-id> [app-id...]     - installs apps from Flathub
+			kk service-add <service> [service...]      - enables and starts systemd services
+			kk service-rem <service> [service...]      - disables and stops systemd services
+			kk system                                  - displays the operating system and package manager
+			kk update                                  - updates kk to the latest version
 `)
 		logCommand(cfg, "kk", fmt.Errorf("no command provided"))
 		return 2
@@ -41,13 +50,17 @@ func run() int {
 	exitCode := 0
 
 	switch command {
-	case "pkg-inst":
+	case "pkg-inst", "package-install":
 		commandErr = cmd.PkgInstall(args)
-	case "pkg-rem":
+	case "pkg-upd", "package-update":
+		commandErr = cmd.PkgUpdate(args)
+	case "pkg-upg", "package-upgrade":
+		commandErr = cmd.PkgUpgrade(args)
+	case "pkg-rem", "package-remove":
 		commandErr = cmd.PkgRemove(args)
-	case "pkg-pur":
+	case "pkg-pur", "package-purge":
 		commandErr = cmd.PkgPurge(args)
-	case "flatpak-inst":
+	case "flatpak-inst", "flatpak-install":
 		commandErr = cmd.FlatpakInstall(args)
 	case "service-add":
 		commandErr = cmd.ServiceAdd(args)
@@ -55,6 +68,8 @@ func run() int {
 		commandErr = cmd.ServiceRemove(args)
 	case "system":
 		commandErr = cmd.SystemInfo()
+	case "update":
+		commandErr = cmd.Update()
 	default:
 		fmt.Fprintln(os.Stderr, "Unknown command:", command)
 		commandErr = fmt.Errorf("unknown command %q", command)
