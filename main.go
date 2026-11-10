@@ -23,22 +23,7 @@ func run() int {
 
 	if len(os.Args) < 2 {
 		fmt.Print(`Usage: kk <command> [args]
-			kk pkg-inst <package> [package...]        - installs packages using the native package manager
-			kk package-install <package> [package...] - installs packages using the native package manager
-			kk pkg-upd                                 - updates the package index using the native package manager
-			kk package-update                          - updates the package index using the native package manager
-			kk pkg-upg                                 - upgrades the installed packages using the native package manager
-			kk package-upgrade                         - upgrades the installed packages using the native package manager
-			kk pkg-rem <package> [package...]          - removes packages
-			kk package-remove <package> [package...]  - removes packages
-			kk pkg-pur <package> [package...]          - purges packages and configuration where supported
-			kk package-purge <package> [package...]    - purges packages and configuration where supported
-			kk flatpak-inst <app-id> [app-id...]        - installs apps from Flathub
-			kk flatpak-install <app-id> [app-id...]     - installs apps from Flathub
-			kk service-add <service> [service...]      - enables and starts systemd services
-			kk service-rem <service> [service...]      - disables and stops systemd services
-			kk system                                  - displays the operating system and package manager
-			kk update                                  - updates kk to the latest version
+To print help for a specific command, run "kk <command> --help"
 `)
 		logCommand(cfg, "kk", fmt.Errorf("no command provided"))
 		return 2
@@ -50,6 +35,30 @@ func run() int {
 	exitCode := 0
 
 	switch command {
+	case "--help", "-h", "help":
+				fmt.Print(`Usage: kk <command> [args]
+
+		kk package-install <package> [package...] - installs packages using the native package manager
+		kk package-update                         - updates the package index using the native package manager
+		kk package-upgrade                        - upgrades the installed packages using the native package manager
+		kk package-remove <package> [package...]  - removes packages
+		kk package-purge <package> [package...]   - purges packages and configuration where supported
+		kk flatpak-install <app-id> [app-id...]   - installs apps from Flathub
+		kk service-add <service> [service...]     - enables and starts systemd services
+		kk service-rem <service> [service...]     - disables and stops systemd services
+		kk system                                 - displays the operating system and package manager
+		kk update                                 - updates kk to the latest version
+
+		Outdated commands:
+		
+		kk pkg-inst <package> [package...]    - installs packages using the native package manager
+		kk pkg-upd                            - updates the package index using the native package manager
+		kk pkg-upg                            - upgrades the installed packages using the native package manager
+		kk pkg-rem <package> [package...]     - removes packages
+		kk pkg-pur <package> [package...]     - purges packages and configuration where supported
+		kk flatpak-inst <app-id> [app-id...]  - installs apps from Flathub
+
+`)
 	case "pkg-inst", "package-install":
 		commandErr = cmd.PkgInstall(args)
 	case "pkg-upd", "package-update":

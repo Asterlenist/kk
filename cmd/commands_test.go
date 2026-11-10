@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestPackageCommandSupportsOnlyAPTAndDNF(t *testing.T) {
+func TestPackageCommand(t *testing.T) {
 	tests := []struct {
 		manager string
 		action  string
@@ -16,10 +16,19 @@ func TestPackageCommandSupportsOnlyAPTAndDNF(t *testing.T) {
 		{"apt-get", "purge", "apt-get", []string{"purge", "-y", "curl"}},
 		{"dnf", "install", "dnf", []string{"install", "-y", "curl"}},
 		{"yum", "purge", "yum", []string{"remove", "-y", "curl"}},
+		{"pacman", "install", "pacman", []string{"-S", "--needed", "--noconfirm", "curl"}},
+		{"pacman", "remove", "pacman", []string{"-R", "--noconfirm", "curl"}},
+		{"pacman", "purge", "pacman", []string{"-Rns", "--noconfirm", "curl"}},
+		{"pacman", "update", "pacman", []string{"-Syu", "--noconfirm"}},
+		{"pacman", "upgrade", "pacman", []string{"-Syu", "--noconfirm"}},
 	}
 
 	for _, test := range tests {
-		program, args, err := packageCommand(test.manager, test.action, []string{"curl"})
+		packages := []string{"curl"}
+		if test.action == "update" || test.action == "upgrade" {
+			packages = nil
+		}
+		program, args, err := packageCommand(test.manager, test.action, packages)
 		if err != nil {
 			t.Fatalf("packageCommand(%q, %q): %v", test.manager, test.action, err)
 		}
@@ -28,9 +37,12 @@ func TestPackageCommandSupportsOnlyAPTAndDNF(t *testing.T) {
 		}
 	}
 
-	for _, manager := range []string{"pacman", "zypper", "apk", "emerge", "xbps-install", "brew", "winget", "choco", "scoop", "pkg"} {
+	for _, manager := range []string{"zypper", "apk", "emerge", "xbps-install", "brew", "winget", "choco", "scoop", "pkg"} {
 		if _, _, err := packageCommand(manager, "install", []string{"curl"}); err == nil {
 			t.Errorf("packageCommand(%q) unexpectedly succeeded", manager)
 		}
+	}
+	if _, _, err := packageCommand("pacman", "unknown", nil); err == nil {
+		t.Error("packageCommand(\"pacman\", \"unknown\") unexpectedly succeeded")
 	}
 }

@@ -43,6 +43,19 @@ func packageCommand(manager, action string, packages []string) (string, []string
 			operation = "remove"
 		}
 		args = []string{operation, "-y"}
+	case "pacman":
+		switch action {
+		case "install":
+			args = []string{"-S", "--needed", "--noconfirm"}
+		case "remove":
+			args = []string{"-R", "--noconfirm"}
+		case "purge":
+			args = []string{"-Rns", "--noconfirm"}
+		case "update", "upgrade":
+			args = []string{"-Syu", "--noconfirm"}
+		default:
+			return "", nil, fmt.Errorf("unsupported package action %q for pacman", action)
+		}
 	default:
 		return "", nil, fmt.Errorf("unsupported package manager %q", manager)
 	}

@@ -48,14 +48,27 @@ func TestDetectPackageManagerReturnsEmptyWhenUnavailable(t *testing.T) {
 	}
 }
 
-func TestDetectPackageManagerIgnoresUnsupportedManagers(t *testing.T) {
+func TestDetectPackageManagerSupportsPacmanOnArchFamily(t *testing.T) {
+	for _, id := range []string{"arch", "manjaro", "endeavouros", "artix", "garuda"} {
+		got := detectPackageManager("linux", []string{id}, func(name string) (string, error) {
+			if name == "pacman" {
+				return "/usr/bin/pacman", nil
+			}
+			return "", errors.New("not found")
+		})
+		if got != "pacman" {
+			t.Errorf("detectPackageManager(%q) = %q, want pacman", id, got)
+		}
+	}
+}
+
+func TestDetectPackageManagerIgnoresUnsupportedManagersOnOtherOSes(t *testing.T) {
 	available := map[string]bool{
-		"pacman": true,
 		"brew":   true,
 		"winget": true,
 		"pkg":    true,
 	}
-	for _, goos := range []string{"linux", "darwin", "windows", "freebsd"} {
+	for _, goos := range []string{"darwin", "windows", "freebsd"} {
 		got := detectPackageManager(goos, []string{"arch"}, func(name string) (string, error) {
 			if available[name] {
 				return "/usr/bin/" + name, nil

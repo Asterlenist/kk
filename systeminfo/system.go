@@ -120,6 +120,8 @@ func detectPackageManager(goos string, ids []string, lookPath func(string) (stri
 			preferences = append(preferences, "apt-get", "apt")
 		case "fedora", "rhel", "centos", "rocky", "almalinux", "ol":
 			preferences = append(preferences, "dnf", "yum")
+		case "arch", "manjaro", "endeavouros", "artix", "garuda":
+			preferences = append(preferences, "pacman")
 		}
 	}
 

@@ -1,11 +1,11 @@
 # kk
 
-`kk` is a small command-line utility for common package-manager and systemd tasks. Native package operations are currently supported only through APT and DNF/YUM on Linux.
+`kk` is a small command-line utility for common package-manager and systemd tasks. Native package operations are supported through APT, DNF/YUM, and pacman on Linux.
 
 ## Requirements
 
 - Go 1.27 or newer to build from source.
-- APT (`apt` or `apt-get`) on Debian-family Linux distributions, or DNF/YUM on RPM-family Linux distributions.
+- APT (`apt` or `apt-get`) on Debian-family distributions, DNF/YUM on RPM-family distributions, or pacman on Arch-family Linux distributions.
 - Flatpak for Flathub installs.
 - Linux with systemd for service commands.
 - Administrative privileges where the selected system utility requires them. `kk` does not invoke `sudo` or elevate privileges automatically.
@@ -62,8 +62,8 @@ kk flatpak-install <app-id> [app-id...]
 
 - `system` prints the detected operating system, Linux distribution, and available package manager.
 - `pkg-inst`/`package-install` install one or more packages using the detected native package manager.
-- `pkg-upd`/`package-update` refresh the package index.
-- `pkg-upg`/`package-upgrade` upgrade installed packages. This is primarily supported for APT-based systems.
+- `pkg-upd`/`package-update` refresh package data. On pacman systems this also upgrades installed packages, as Arch Linux does not support a safe standalone package-index refresh.
+- `pkg-upg`/`package-upgrade` upgrade installed packages. On pacman systems this performs a full system synchronization and upgrade.
 - `pkg-rem`/`package-remove` remove packages.
 - `pkg-pur`/`package-purge` remove packages and clean configuration/dependencies where the package manager supports it.
 - `flatpak-inst` installs application IDs from the Flathub remote. Flatpak must already be installed and configured with Flathub.
@@ -71,7 +71,7 @@ kk flatpak-install <app-id> [app-id...]
 - `service-rem` stops and disables systemd services. It does not delete unit files.
 - `update` pulls the latest project version and installs the updated binary to `/usr/local/bin/kk`.
 
-Package operations use the available APT or DNF/YUM executable. Administrative privileges may be required; `kk` does not invoke `sudo` or elevate privileges automatically. Review package names and system changes before running install, remove, purge, or upgrade commands.
+Package operations use the available APT, DNF/YUM, or pacman executable. Administrative privileges may be required; `kk` does not invoke `sudo` or elevate privileges automatically. Review package names and system changes before running install, remove, purge, or upgrade commands.
 
 ## Command history
 
@@ -90,4 +90,4 @@ max_size = 0
 
 ## Supported package managers
 
-The detector recognizes only `apt-get`/`apt` and `dnf`/`yum`. On Linux distributions using other package managers, and on macOS, Windows, and FreeBSD, `kk system` still reports the operating system but does not select a package manager; native package commands return an error. Flatpak and systemd service commands are separate from native package-manager support.
+The detector recognizes `apt-get`/`apt`, `dnf`/`yum`, and `pacman`. On Linux distributions using other package managers, and on macOS, Windows, and FreeBSD, `kk system` still reports the operating system but does not select a package manager; native package commands return an error. Flatpak and systemd service commands are separate from native package-manager support.
