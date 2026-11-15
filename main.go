@@ -38,36 +38,36 @@ To print help for a specific command, run "kk <command> --help"
 	case "--help", "-h", "help":
 		fmt.Print(`Usage: kk <command> [args]
 
-		kk package-install <package> [package...] - installs packages using the native package manager
-		kk package-search <package> [package...]  - searches the packages using the native package manager
-		kk package-update                         - updates the package index using the native package manager
-		kk package-upgrade                        - upgrades the installed packages using the native package manager
-		kk package-remove <package> [package...]  - removes packages
-		kk package-purge <package> [package...]   - purges packages and configuration where supported
-		kk flatpak-install <app-id> [app-id...]   - installs apps from Flathub
-		kk service-add <service> [service...]     - enables and starts systemd services
-		kk service-rem <service> [service...]     - disables and stops systemd services
-		kk system                                 - displays the operating system and package manager
-		kk update                                 - updates kk to the latest version
-		kk doctor                                 - checks the system
+		kk -i <package> [package...]  - installs packages using the native package manager
+		kk -s <package> [package...]  - searches the packages using the native package manager
+		kk -up                        - updates the package index using the native package manager
+		kk -UP                        - upgrades the installed packages using the native package manager
+		kk -r <package> [package...]  - removes packages
+		kk -R <package> [package...]  - purges packages and configuration where supported
+		kk -fi <app-id> [app-id...]   - installs apps from Flathub
+		kk -Sa <service> [service...] - enables and starts systemd services
+		kk -Sr <service> [service...] - disables and stops systemd services
+		kk system                     - displays the operating system and package manager
+		kk update                     - updates kk to the latest version
+		kk doctor                     - checks the system
 `)
-	case "package-install":
+	case "-i":
 		commandErr = cmd.PkgInstall(args)
-	case "package-search":
+	case "-s":
 		cmd.PkgSearch(args)
-	case "package-update":
+	case "-up":
 		commandErr = cmd.PkgUpdate(args)
-	case "package-upgrade":
+	case "-UP":
 		commandErr = cmd.PkgUpgrade(args)
-	case "package-remove":
+	case "-r":
 		commandErr = cmd.PkgRemove(args)
-	case "package-purge":
+	case "-R":
 		commandErr = cmd.PkgPurge(args)
-	case "flatpak-install":
+	case "-fi":
 		commandErr = cmd.FlatpakInstall(args)
-	case "service-add":
+	case "-Sa":
 		commandErr = cmd.ServiceAdd(args)
-	case "service-rem":
+	case "-Sr":
 		commandErr = cmd.ServiceRemove(args)
 	case "system":
 		commandErr = cmd.SystemInfo()
