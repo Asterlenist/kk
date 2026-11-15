@@ -36,9 +36,10 @@ To print help for a specific command, run "kk <command> --help"
 
 	switch command {
 	case "--help", "-h", "help":
-				fmt.Print(`Usage: kk <command> [args]
+		fmt.Print(`Usage: kk <command> [args]
 
 		kk package-install <package> [package...] - installs packages using the native package manager
+		kk package-search <package> [package...]  - searches the packages using the native package manager
 		kk package-update                         - updates the package index using the native package manager
 		kk package-upgrade                        - upgrades the installed packages using the native package manager
 		kk package-remove <package> [package...]  - removes packages
@@ -48,28 +49,21 @@ To print help for a specific command, run "kk <command> --help"
 		kk service-rem <service> [service...]     - disables and stops systemd services
 		kk system                                 - displays the operating system and package manager
 		kk update                                 - updates kk to the latest version
-
-		Outdated commands:
-		
-		kk pkg-inst <package> [package...]    - installs packages using the native package manager
-		kk pkg-upd                            - updates the package index using the native package manager
-		kk pkg-upg                            - upgrades the installed packages using the native package manager
-		kk pkg-rem <package> [package...]     - removes packages
-		kk pkg-pur <package> [package...]     - purges packages and configuration where supported
-		kk flatpak-inst <app-id> [app-id...]  - installs apps from Flathub
-
+		kk doctor                                 - checks the system
 `)
-	case "pkg-inst", "package-install":
+	case "package-install":
 		commandErr = cmd.PkgInstall(args)
-	case "pkg-upd", "package-update":
+	case "package-search":
+		cmd.PkgSearch(args)
+	case "package-update":
 		commandErr = cmd.PkgUpdate(args)
-	case "pkg-upg", "package-upgrade":
+	case "package-upgrade":
 		commandErr = cmd.PkgUpgrade(args)
-	case "pkg-rem", "package-remove":
+	case "package-remove":
 		commandErr = cmd.PkgRemove(args)
-	case "pkg-pur", "package-purge":
+	case "package-purge":
 		commandErr = cmd.PkgPurge(args)
-	case "flatpak-inst", "flatpak-install":
+	case "flatpak-install":
 		commandErr = cmd.FlatpakInstall(args)
 	case "service-add":
 		commandErr = cmd.ServiceAdd(args)
@@ -79,6 +73,8 @@ To print help for a specific command, run "kk <command> --help"
 		commandErr = cmd.SystemInfo()
 	case "update":
 		commandErr = cmd.Update()
+	case "doctor":
+		cmd.Doctor()
 	default:
 		fmt.Fprintln(os.Stderr, "Unknown command:", command)
 		commandErr = fmt.Errorf("unknown command %q", command)
