@@ -38,21 +38,10 @@ The installer builds `kk` and places it in `/usr/bin/` or `/usr/local/bin/` depe
 
 ```text
 kk system
-kk pkg-inst <package> [package...]
-kk pkg-upd
-kk pkg-upg
-kk pkg-rem <package> [package...]
-kk pkg-pur <package> [package...]
-kk flatpak-inst <app-id> [app-id...]
 kk service-add <service> [service...]
 kk service-rem <service> [service...]
-kk update
-```
-
-The application also accepts longer aliases:
-
-```text
 kk package-install <package> [package...]
+kk search <package> [package...]
 kk package-update
 kk package-upgrade
 kk package-remove <package> [package...]
@@ -61,12 +50,13 @@ kk flatpak-install <app-id> [app-id...]
 ```
 
 - `system` prints the detected operating system, Linux distribution, and available package manager.
-- `pkg-inst`/`package-install` install one or more packages using the detected native package manager.
-- `pkg-upd`/`package-update` refresh package data. On pacman systems this also upgrades installed packages, as Arch Linux does not support a safe standalone package-index refresh.
-- `pkg-upg`/`package-upgrade` upgrade installed packages. On pacman systems this performs a full system synchronization and upgrade.
-- `pkg-rem`/`package-remove` remove packages.
-- `pkg-pur`/`package-purge` remove packages and clean configuration/dependencies where the package manager supports it.
-- `flatpak-inst` installs application IDs from the Flathub remote. Flatpak must already be installed and configured with Flathub.
+- `package-install` install one or more packages using the detected native package manager.
+- `package-search` searches one or more packages using the detected native package manager.
+- `package-update` refresh package data. On pacman systems this also upgrades installed packages, as Arch Linux does not support a safe standalone package-index refresh.
+- `package-upgrade` upgrade installed packages. On pacman systems this performs a full system synchronization and upgrade.
+- `package-remove` remove packages.
+- `package-purge` remove packages and clean configuration/dependencies where the package manager supports it.
+- `flatpak-install` installs application IDs from the Flathub remote. Flatpak must already be installed and configured with Flathub.
 - `service-add` enables and starts systemd services immediately.
 - `service-rem` stops and disables systemd services. It does not delete unit files.
 - `update` pulls the latest project version and installs the updated binary to `/usr/local/bin/kk`.
