@@ -38,12 +38,12 @@ To print help for a specific command, run "kk <command> --help"
 	case "--help", "-h", "help":
 		fmt.Print(`Usage: kk <command> [args]
 
-		kk -i <package> [package...]  - installs packages using the native package manager
-		kk -s <package> [package...]  - searches the packages using the native package manager
-		kk -up                        - updates the package index using the native package manager
-		kk -UP                        - upgrades the installed packages using the native package manager
+		kk -i <package> [package...]  - installs packages
+		kk -s <package> [package...]  - searches the packages
+		kk -up                        - updates the package index
+		kk -UP                        - upgrades the installed packages
 		kk -r <package> [package...]  - removes packages
-		kk -R <package> [package...]  - purges packages and configuration where supported
+		kk -R <package> [package...]  - purges packages and configuration
 		kk -fi <app-id> [app-id...]   - installs apps from Flathub
 		kk -Sa <service> [service...] - enables and starts systemd services
 		kk -Sr <service> [service...] - disables and stops systemd services

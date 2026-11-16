@@ -10,7 +10,7 @@ func ServiceRemove(args []string) error {
 	if runtime.GOOS != "linux" {
 		return fmt.Errorf("service-rem is supported only on Linux")
 	}
-	if err := validateNames(args, "usage: kk service-rem <service> [service...]"); err != nil {
+	if err := validateNames(args, "usage: kk -Sr <service> [service...]"); err != nil {
 		return err
 	}
 	for _, service := range args {

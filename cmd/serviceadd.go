@@ -10,7 +10,7 @@ func ServiceAdd(args []string) error {
 	if runtime.GOOS != "linux" {
 		return fmt.Errorf("service-add is supported only on Linux")
 	}
-	if err := validateNames(args, "usage: kk service-add <service> [service...]"); err != nil {
+	if err := validateNames(args, "usage: kk -Sa <service> [service...]"); err != nil {
 		return err
 	}
 	for _, service := range args {

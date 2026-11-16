@@ -9,7 +9,7 @@ import (
 
 func PkgUpdate(args []string) error {
 	if len(args) > 0 {
-		return fmt.Errorf("usage: kk pkg-upd")
+		return fmt.Errorf("usage: kk -up")
 	}
 	if os.Getuid() != 0 {
 		return fmt.Errorf("this command must be run as root: use sudo or switch to the root user")

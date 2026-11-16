@@ -8,7 +8,7 @@ import (
 
 func PkgUpgrade(args []string) error {
 	if len(args) > 0 {
-		return fmt.Errorf("usage: kk pkg-upg")
+		return fmt.Errorf("usage: kk -UP")
 	}
 
 	info, err := systeminfo.Detect()
